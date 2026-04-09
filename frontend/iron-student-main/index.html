@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>ПК-Майстерня — Освітня платформа</title>
+  
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Основні стилі -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="main-container">
+    
+    <!-- ============================================
+         HEADER / НАВІГАЦІЯ
+         ============================================ -->
+    <header>
+      <div class="logo">
+        <i class="fas fa-microchip"></i>
+        ПК-Майстерня
+      </div>
+      <nav>
+        <button class="active" data-page="dashboard">Дашборд</button>
+        <button data-page="test">Тест</button>
+        <button data-page="game">Гра</button>
+        <button data-page="admin">Адмін</button>
+      </nav>
+    </header>
+
+    <!-- ============================================
+         ГОЛОВНА СТОРІНКА (ДАШБОРД СТУДЕНТА)
+         ============================================ -->
+    <main>
+      <section class="page active" id="dashboard">
+        
+        <!-- Hero секція з прогресом -->
+        <div class="dashboard-hero">
+          <div class="dashboard-hello">
+            <span class="hello-main">З поверненням, Олександре!</span>
+            <span class="badge">Студент 1 курсу</span>
+          </div>
+          <div class="progress-block">
+            <span class="progress-label">Загальний прогрес:</span>
+            <div class="progress-bar">
+              <div class="progress-bar-inner" style="width: 60%"></div>
+              <span class="progress-value">60%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Сітка з 4 карток -->
+        <div class="dashboard-grid">
+          
+          <!-- Карточка 1: Тест -->
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-microchip"></i></div>
+            <div class="card-title">Тест: Комплектуючі ПК</div>
+            <div class="card-status success">
+              <i class="fas fa-check-circle"></i> Пройдено
+            </div>
+            <button class="card-btn">Повторити</button>
+            <div class="card-info">Результат: 8/9 | 12 хв</div>
+          </div>
+
+          <!-- Карточка 2: Гра -->
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-desktop"></i></div>
+            <div class="card-title">Збірка ПК (Гра)</div>
+            <div class="card-status">
+              <i class="fas fa-list-ol"></i> Замовлення №3 з 5
+            </div>
+            <button class="card-btn">Продовжити збірку</button>
+            <div class="card-info mini-progress"><span>3</span>/5 деталей встановлено</div>
+          </div>
+
+          <!-- Карточка 3: Сертифікати -->
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-certificate"></i></div>
+            <div class="card-title">Мої сертифікати</div>
+            <ul class="cert-list">
+              <li><i class="fas fa-file-pdf"></i> Тест: Комплектуючі ПК</li>
+              <li><i class="fas fa-file-pdf"></i> Замовлення №1</li>
+            </ul>
+            <button class="card-btn">Завантажити всі PDF</button>
+          </div>
+
+          <!-- Карточка 4: Методички -->
+          <div class="card">
+            <div class="card-icon"><i class="fas fa-book"></i></div>
+            <div class="card-title">Методички</div>
+            <ul class="card-links">
+              <li><a href="#" target="_blank"><i class="fas fa-file-pdf"></i> Основи складання ПК (PDF)</a></li>
+              <li><a href="#" target="_blank"><i class="fas fa-file-pdf"></i> Схема материнської плати (PDF)</a></li>
+            </ul>
+            <button class="card-btn">Всі матеріали</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================
+           СТОРІНКА ТЕСТУ
+           ============================================ -->
+      <section class="page" id="test">
+        <div class="test-container">
+          
+          <!-- Шапка тесту -->
+          <div class="test-header">
+            <div class="test-timer">
+              <i class="fas fa-clock"></i>
+              <span>12:34</span>
+            </div>
+            <div class="test-bar">
+              <div class="test-bar-inner"></div>
+            </div>
+            <div class="test-progress">
+              <span id="test-question-index">1</span>/<span id="test-question-total">3</span>
+            </div>
+          </div>
+
+          <!-- Основна частина тесту -->
+          <div class="test-main">
+            <div class="test-question">Що це за компонент?</div>
+            
+            <!-- Зображення (placeholder) -->
+            <div class="test-image">
+              <i class="test-image-icon fas fa-image"></i>
+              <span class="test-image-label">Зображення материнської плати</span>
+            </div>
+
+            <!-- Варіанти відповідей -->
+            <div class="test-answers">
+              <button class="test-answer">Процесор</button>
+              <button class="test-answer">Оперативна пам'ять</button>
+              <button class="test-answer">Материнська плата</button>
+            </div>
+          </div>
+
+          <!-- Навігація -->
+          <div class="test-nav">
+            <button class="test-nav-btn" id="test-back" disabled>Назад</button>
+            <button class="test-nav-btn" id="test-next" style="display:none;">Далі</button>
+            <button class="test-nav-btn" id="test-finish" style="display:none;">Завершити</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================
+           СТОРІНКА ГРИ (СИМУЛЯТОР ЗБІРКИ ПК)
+           ============================================ -->
+      <section class="page" id="game">
+        <div class="game-grid">
+          
+          <!-- Ліва панель: чеклист + керування -->
+          <div class="game-left">
+            <div class="game-progress-title">Замовлення №3: Офісний ПК</div>
+            
+            <ul class="game-checklist">
+              <li class="done"><i class="fas fa-check"></i> Встановити процесор</li>
+              <li class="done"><i class="fas fa-check"></i> Встановити RAM</li>
+              <li class="done"><i class="fas fa-check"></i> Встановити GPU</li>
+              <li><i class="fas fa-circle"></i> Встановити SSD</li>
+              <li><i class="fas fa-circle"></i> Підключити PSU</li>
+            </ul>
+
+            <div class="game-controls">
+              <div class="controls-title">Керування</div>
+              <div class="controls-row">
+                <button class="key-btn">W<span>🠕</span></button>
+                <button class="key-btn">A<span>🠔</span></button>
+                <button class="key-btn">S<span>🠗</span></button>
+                <button class="key-btn">D<span>🠖</span></button>
+              </div>
+              <div class="controls-row">
+                <button class="key-btn">E<span>взяти</span></button>
+                <button class="key-btn">F<span>встановити</span></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Центр: схема ПК -->
+          <div class="game-center">
+            <div class="pc-scheme">
+              <div class="slot cpu">CPU</div>
+              <div class="slot ram">RAM</div>
+              <div class="slot gpu">GPU</div>
+              <div class="slot mb">Материнська плата</div>
+              <div class="slot psu">PSU</div>
+              <div class="slot ssd">SSD</div>
+              <div class="pc-label">Кабінет збірки</div>
+            </div>
+          </div>
+
+          <!-- Права панель: деталі -->
+          <div class="game-right">
+            <div class="details-title">Доступні деталі</div>
+            
+            <div class="details-list">
+              <div class="detail-card">
+                <i class="fas fa-microchip"></i>
+                <span>Intel Core i5-12400</span>
+                <span class="price">$200</span>
+              </div>
+              <div class="detail-card">
+                <i class="fas fa-memory"></i>
+                <span>RAM 16GB DDR4</span>
+                <span class="price">$80</span>
+              </div>
+              <div class="detail-card">
+                <i class="fas fa-desktop"></i>
+                <span>NVIDIA GTX 1660</span>
+                <span class="price">$300</span>
+              </div>
+              <div class="detail-card">
+                <i class="fas fa-hdd"></i>
+                <span>SSD 500GB NVMe</span>
+                <span class="price">$60</span>
+              </div>
+              <div class="detail-card incompatible">
+                <i class="fas fa-plug"></i>
+                <span>PSU 850W</span>
+                <span class="incomp-label">Несумісне</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Нижня панель: підсумок замовлення -->
+          <div class="game-bottom">
+            <div class="order-info">
+              Замовлення №3 | Бюджет: $1200 | Використано: $640
+            </div>
+            <div class="order-actions">
+              <button class="order-btn">
+                <i class="fas fa-undo"></i> Скинути
+              </button>
+              <button class="order-btn blue">
+                <i class="fas fa-lightbulb"></i> Підказка
+              </button>
+              <button class="order-btn green" disabled>
+                <i class="fas fa-check"></i> Завершити замовлення
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================
+           СТОРІНКА АДМІНІСТРАТОРА
+           ============================================ -->
+      <section class="page" id="admin">
+        <div class="admin-panel">
+          
+          <!-- Шапка адмін-панелі -->
+          <div class="admin-header">
+            <div class="admin-title">Панель адміністратора</div>
+            <div class="admin-actions">
+              <button class="admin-btn">
+                <i class="fas fa-user-plus"></i> Додати студента
+              </button>
+              <button class="admin-btn">
+                <i class="fas fa-file-export"></i> Експорт даних
+              </button>
+            </div>
+          </div>
+
+          <!-- Таблиця студентів -->
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ПІБ</th>
+                <th>Роль</th>
+                <th>Тест</th>
+                <th>Замовлення</th>
+                <th>Прогрес</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Іванов Олександр</td>
+                <td><span class="role-badge student">Студент</span></td>
+                <td><span class="badge-test success">8/9</span></td>
+                <td>3 з 5</td>
+                <td>
+                  <div class="admin-progress">
+                    <div style="width: 60%;"></div>
+                  </div>
+                  60%
+                </td>
+              </tr>
+              <tr>
+                <td>Петренко Марія</td>
+                <td><span class="role-badge student">Студент</span></td>
+                <td><span class="badge-test success">9/9</span></td>
+                <td>5 з 5</td>
+                <td>
+                  <div class="admin-progress">
+                    <div style="width: 100%;"></div>
+                  </div>
+                  100%
+                </td>
+              </tr>
+              <tr>
+                <td>Сидоренко Іван</td>
+                <td><span class="role-badge student">Студент</span></td>
+                <td><span class="badge-test">6/9</span></td>
+                <td>1 з 5</td>
+                <td>
+                  <div class="admin-progress">
+                    <div style="width: 35%;"></div>
+                  </div>
+                  35%
+                </td>
+              </tr>
+              <tr>
+                <td>Коваленко Валерія</td>
+                <td><span class="role-badge admin">Адмін</span></td>
+                <td><span class="badge-test success">9/9</span></td>
+                <td>—</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============================================
+         МОДАЛЬНЕ ВІКНО (РЕЗУЛЬТАТ ТЕСТУ)
+         ============================================ -->
+    <div class="modal-bg" id="modal-bg" style="display: none;">
+      <div class="modal-window">
+        <button class="modal-close" id="modal-close">×</button>
+        
+        <div class="modal-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        
+        <div class="modal-title" id="modal-title">Вітаємо!</div>
+        
+        <div class="modal-text" id="modal-text">
+          Ви успішно склали тест.<br>
+          Ваш результат: <span id="modal-score">3 / 3</span>
+        </div>
+        
+        <button class="modal-btn">
+          <i class="fas fa-download"></i>
+          Завантажити сертифікат (PDF)
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================================
+       JAVASCRIPT ДЛЯ ДЕМОНСТРАЦІЇ ІНТЕРФЕЙСУ
+       ============================================ -->
+  <script>
+    // =============================================
+    // Анімація прогрес-барів
+    // =============================================
+    window.addEventListener('DOMContentLoaded', () => {
+      // Головний прогрес-бар дашборду
+      const pb = document.querySelector('.progress-bar-inner');
+      if(pb) setTimeout(() => pb.style.width = '60%', 200);
+      
+      // Прогрес-бари в адмінці
+      document.querySelectorAll('.admin-progress').forEach(bar => {
+        const inner = bar.querySelector('div');
+        if(inner) {
+          const width = inner.getAttribute('style').match(/width:([0-9]+)%/);
+          inner.style.width = '0';
+          setTimeout(() => {
+            if(width) inner.style.width = width[1] + '%';
+          }, 400);
+        }
+      });
+    });
+
+    // =============================================
+    // Модальне вікно результату тесту
+    // =============================================
+    function showModal(result, total) {
+      document.getElementById('modal-score').textContent = result + ' / ' + total;
+      document.getElementById('modal-title').textContent = result === total ? 'Вітаємо!' : 'Результат тесту';
+      document.getElementById('modal-text').innerHTML = result === total
+        ? 'Ви успішно склали тест.<br>Ваш результат: <span id="modal-score">' + result + ' / ' + total + '</span>'
+        : 'Ви пройшли тест.<br>Ваш результат: <span id="modal-score">' + result + ' / ' + total + '</span>';
+      document.getElementById('modal-bg').style.display = 'flex';
+    }
+
+    document.getElementById('modal-close').onclick = function() {
+      document.getElementById('modal-bg').style.display = 'none';
+    };
+
+    // Закриття по кліку на фон
+    document.getElementById('modal-bg').onclick = function(e) {
+      if(e.target === this) this.style.display = 'none';
+    };
+
+    // =============================================
+    // Переключення сторінок
+    // =============================================
+    const navButtons = document.querySelectorAll('nav button');
+    const pages = document.querySelectorAll('.page');
+    
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        pages.forEach(page => {
+          page.classList.remove('active');
+          if(page.id === btn.dataset.page) page.classList.add('active');
+        });
+      });
+    });
+
+    // =============================================
+    // Тест: дані питань
+    // =============================================
+    const testData = [
+      {
+        question: "Що це за компонент?",
+        image: { icon: "fa-image", label: "Зображення материнської плати" },
+        answers: [
+          { text: "Процесор", correct: false },
+          { text: "Оперативна пам'ять", correct: false },
+          { text: "Материнська плата", correct: true }
+        ]
+      },
+      {
+        question: "Яка деталь відповідає за обробку графіки?",
+        image: { icon: "fa-image", label: "Зображення відеокарти" },
+        answers: [
+          { text: "Відеокарта", correct: true },
+          { text: "SSD-накопичувач", correct: false },
+          { text: "Оперативна пам'ять", correct: false }
+        ]
+      },
+      {
+        question: "Який компонент зберігає дані навіть після вимкнення ПК?",
+        image: { icon: "fa-image", label: "Зображення SSD" },
+        answers: [
+          { text: "Оперативна пам'ять", correct: false },
+          { text: "SSD-накопичувач", correct: true },
+          { text: "Відеокарта", correct: false }
+        ]
+      }
+    ];
+
+    let testIndex = 0;
+    let testAnswers = [];
+
+    // =============================================
+    // Відображення питання тесту
+    // =============================================
+    function renderTestQuestion() {
+      const q = testData[testIndex];
+      
+      // Оновити лічильник питань
+      document.querySelector('#test-question-index').textContent = testIndex + 1;
+      document.querySelector('#test-question-total').textContent = testData.length;
+      
+      // Прогрес-бар
+      const bar = document.querySelector('.test-bar-inner');
+      if(bar) bar.style.width = ((testIndex + 1) / testData.length * 100) + '%';
+      
+      // Текст питання
+      document.querySelector('.test-question').textContent = q.question;
+      
+      // Іконка зображення
+      const imgIcon = document.querySelector('.test-image-icon');
+      imgIcon.className = 'test-image-icon fas ' + q.image.icon;
+      document.querySelector('.test-image-label').textContent = q.image.label;
+      
+      // Варіанти відповідей
+      const answersBlock = document.querySelector('.test-answers');
+      answersBlock.innerHTML = '';
+      
+      q.answers.forEach((ans, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'test-answer';
+        btn.textContent = ans.text;
+        btn.dataset.correct = ans.correct;
+        btn.disabled = false;
+        
+        btn.addEventListener('click', function() {
+          // Відключити всі кнопки
+          answersBlock.querySelectorAll('button').forEach(b => b.disabled = true);
+          
+          btn.classList.add('selected');
+          if(ans.correct) {
+            btn.classList.add('correct');
+          } else {
+            btn.classList.add('incorrect');
+          }
+          
+          testAnswers[testIndex] = ans.correct;
+          
+          // Показати "Далі" або "Завершити"
+          document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
+          document.getElementById('test-finish').style.display = (testIndex === testData.length - 1) ? '' : 'none';
+        });
+        
+        answersBlock.appendChild(btn);
+      });
+      
+      // Кнопки навігації
+      document.getElementById('test-back').disabled = testIndex === 0;
+      document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
+      document.getElementById('test-finish').style.display = (testIndex === testData.length - 1) ? '' : 'none';
+    }
+
+    // =============================================
+    // Навігація по питаннях тесту
+    // =============================================
+    const testSection = document.getElementById('test');
+    if(testSection) {
+      document.getElementById('test-back').onclick = function() {
+        if(testIndex > 0) {
+          testIndex--;
+          renderTestQuestion();
+        }
+      };
+      
+      document.getElementById('test-next').onclick = function() {
+        if(testIndex < testData.length - 1) {
+          testIndex++;
+          renderTestQuestion();
+        }
+      };
+      
+      document.getElementById('test-finish').onclick = function() {
+        // Показати модалку з результатом
+        showModal(testAnswers.filter(Boolean).length, testData.length);
+      };
+      
+      // Ініціалізація тесту
+      renderTestQuestion();
+    }
+  </script>
+
+</body>
+</html>

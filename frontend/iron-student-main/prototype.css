@@ -1,0 +1,192 @@
+/* ПК-Майстерня — основні стилі */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* background: #0A0C10; */
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  min-width: 1200px;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(circle, #1A1F2E 1px, transparent 1px) 0 0/32px 32px;
+  pointer-events: none;
+}
+.main-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 48px 16px 48px;
+  background: rgba(20,25,40,0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 16px 0 rgba(0,212,255,0.08);
+  border-bottom: 1px solid #23263a;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  color: #00D4FF;
+  text-shadow: 0 0 10px #00D4FF, 0 0 20px #7B2CBF;
+  letter-spacing: 2px;
+  font-weight: 700;
+  user-select: none;
+}
+nav {
+  display: flex;
+  gap: 32px;
+}
+nav button {
+  background: none;
+  border: none;
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+  position: relative;
+}
+nav button.active,
+nav button:hover {
+  color: #fff;
+  background: rgba(0,212,255,0.08);
+  box-shadow: 0 0 10px #00D4FF44;
+  text-shadow: 0 0 8px #00D4FF;
+}
+.page {
+  display: none;
+  padding: 40px 48px 32px 48px;
+  flex: 1 1 auto;
+  min-height: 600px;
+  animation: fadeIn 0.5s;
+}
+.page.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Заготовки для будущих блоков */
+.stub {
+  border: 2px dashed #23263a;
+  border-radius: 18px;
+  background: rgba(20,25,40,0.5);
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #7B2CBF;
+  margin-top: 40px;
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* Dashboard Hero */
+.dashboard-hero {
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.dashboard-hello {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.hello-main {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.1rem;
+  color: #fff;
+  text-shadow: 0 0 12px #00D4FF, 0 0 24px #7B2CBF;
+  letter-spacing: 2px;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+.badge {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  padding: 6px 18px;
+  border-radius: 16px;
+  font-weight: 600;
+  box-shadow: 0 0 10px #00D4FF44;
+  letter-spacing: 1px;
+  margin-left: 8px;
+}
+.progress-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 420px;
+}
+.progress-label {
+  color: #8A94A8;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+.progress-bar {
+  position: relative;
+  height: 28px;
+  background: rgba(20,25,40,0.8);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #00D4FF44;
+  border: 1.5px solid #23263a;
+}
+.progress-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  box-shadow: 0 0 16px #00D4FF99;
+  border-radius: 16px 0 0 16px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(.77,0,.18,1);
+}
+.progress-value {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  color: #fff;
+  text-shadow: 0 0 8px #00D4FF;
+}
+.dashboard-title, .game-progress-title, .details-title, .admin-title, .modal-title, .test-question {
+  animation: neon-pulse 2.2s infinite alternate;
+}
+@keyframes neon-pulse {
+  0% {
+    text-shadow: 0 0 12px #00D4FF, 0 0 24px #7B2CBF;
+  }
+  50% {
+    text-shadow: 0 0 32px #00D4FF, 0 0 48px #7B2CBF, 0 0 16px #00E676;
+  }
+  100% {
+    text-shadow: 0 0 12px #00D4FF, 0 0 24px #7B2CBF;
+  }
+}
+/* ...existing code... (весь CSS з prototype.html, включаючи всі сторінки, модалку, анімації, кнопки, grid, admin, test, game, media, тощо) */

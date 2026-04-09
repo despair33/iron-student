@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        body { font-family: sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
+        input { width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background: #218838; }
+        .error { color: red; }
+        a { display: block; text-align: center; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Register</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+    <a href="{% url 'login' %}">Already have account? Login</a>
+</body>
+</html>

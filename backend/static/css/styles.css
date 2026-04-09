@@ -1,0 +1,1131 @@
+/* =================================================================
+   ПК-Майстерня — Освітня платформа по збірці ПК
+   Стильовий файл для візуального про
+
+типу
+   ================================================================= */
+
+/* -----------------------------------------------------------------
+   ІМПОРТИ ТА ШРИФТИ
+   ----------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@700&display=swap');
+
+/* -----------------------------------------------------------------
+   БАЗОВІ СТИЛІ
+   ----------------------------------------------------------------- */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  /* background: #0A0C10; */
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  min-width: 1200px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(circle, #1A1F2E 1px, transparent 1px) 0 0/32px 32px;
+  pointer-events: none;
+}
+
+.main-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -----------------------------------------------------------------
+   АНІМАЦІЇ
+   ----------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes neon-pulse {
+  0% { text-shadow: 0 0 12px #00D4FF, 0 0 24px #7B2CBF; }
+  50% { text-shadow: 0 0 32px #00D4FF, 0 0 48px #7B2CBF, 0 0 16px #00E676; }
+  100% { text-shadow: 0 0 12px #00D4FF, 0 0 24px #7B2CBF; }
+}
+
+@keyframes blink-green {
+  0% { box-shadow: 0 0 0 #00E67600; }
+  50% { box-shadow: 0 0 32px #00E676; }
+  100% { box-shadow: 0 0 18px #00E67699; }
+}
+
+@keyframes blink-red {
+  0% { box-shadow: 0 0 0 #FF444400; }
+  50% { box-shadow: 0 0 32px #FF4444; }
+  100% { box-shadow: 0 0 18px #FF444499; }
+}
+
+/* -----------------------------------------------------------------
+   HEADER / НАВІГАЦІЯ
+   ----------------------------------------------------------------- */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 48px 16px 48px;
+  background: rgba(20,25,40,0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 16px 0 rgba(0,212,255,0.08);
+  border-bottom: 1px solid #23263a;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  color: #00D4FF;
+  text-shadow: 0 0 10px #00D4FF, 0 0 20px #7B2CBF;
+  letter-spacing: 2px;
+  font-weight: 700;
+  user-select: none;
+}
+
+nav {
+  display: flex;
+  gap: 32px;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+  position: relative;
+}
+
+nav button.active,
+nav button:hover {
+  color: #fff;
+  background: rgba(0,212,255,0.08);
+  box-shadow: 0 0 10px #00D4FF44;
+  text-shadow: 0 0 8px #00D4FF;
+}
+
+/* -----------------------------------------------------------------
+   СТОРІНКИ (ЗАГАЛЬНЕ)
+   ----------------------------------------------------------------- */
+.page {
+  display: none;
+  padding: 40px 48px 32px 48px;
+  flex: 1 1 auto;
+  min-height: 600px;
+  animation: fadeIn 0.5s;
+}
+
+.page.active {
+  display: block;
+}
+
+/* -----------------------------------------------------------------
+   ДАШБОРД СТУДЕНТА
+   ----------------------------------------------------------------- */
+.dashboard-hero {
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-hello {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.hello-main {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.1rem;
+  color: #fff;
+  text-shadow: 0 0 12px #00D4FF, 0 0 24px #7B2CBF;
+  letter-spacing: 2px;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+
+.badge {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  padding: 6px 18px;
+  border-radius: 16px;
+  font-weight: 600;
+  box-shadow: 0 0 10px #00D4FF44;
+  letter-spacing: 1px;
+  margin-left: 8px;
+}
+
+.progress-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 420px;
+}
+
+.progress-label {
+  color: #8A94A8;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.progress-bar {
+  position: relative;
+  height: 28px;
+  background: rgba(20,25,40,0.8);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #00D4FF44;
+  border: 1.5px solid #23263a;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  box-shadow: 0 0 16px #00D4FF99;
+  border-radius: 16px 0 0 16px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(.77,0,.18,1);
+}
+
+.progress-value {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  color: #fff;
+  text-shadow: 0 0 8px #00D4FF;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 32px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.card {
+  background: rgba(20,25,40,0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 22px;
+  box-shadow: 0 0 18px #00D4FF33, 0 2px 24px #7B2CBF22;
+  border: 1.5px solid #23263a;
+  padding: 32px 28px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+  transition: all 0.2s;
+  min-height: 220px;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 0 32px #00D4FF88, 0 2px 32px #7B2CBF44;
+  z-index: 2;
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #00D4FF;
+  text-shadow: 0 0 12px #00D4FF, 0 0 16px #7B2CBF;
+  margin-bottom: 2px;
+}
+
+.card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  color: #fff;
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
+}
+
+.card-status {
+  font-size: 1rem;
+  color: #8A94A8;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.card-status.success {
+  color: #00E676;
+  text-shadow: 0 0 8px #00E67699;
+}
+
+.card-btn {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 28px;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00D4FF44;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.card-btn:hover {
+  background: linear-gradient(90deg, #7B2CBF 0%, #00D4FF 100%);
+  box-shadow: 0 0 18px #00D4FF99, 0 0 32px #7B2CBF88;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.card-info {
+  color: #8A94A8;
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+.mini-progress {
+  font-family: 'Orbitron', monospace;
+  color: #00D4FF;
+  font-size: 1.1rem;
+}
+
+.cert-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cert-list i {
+  color: #00D4FF;
+  margin-right: 7px;
+}
+
+.card-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-links a {
+  color: #00D4FF;
+  text-decoration: none;
+  transition: color 0.2s;
+  font-size: 1rem;
+}
+
+.card-links a:hover {
+  color: #7B2CBF;
+  text-decoration: underline;
+}
+
+/* -----------------------------------------------------------------
+   ТЕСТ
+   ----------------------------------------------------------------- */
+.test-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(20,25,40,0.8);
+  border-radius: 22px;
+  box-shadow: 0 0 18px #00D4FF33, 0 2px 24px #7B2CBF22;
+  padding: 38px 38px 28px 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.test-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.test-timer {
+  font-family: 'Orbitron', monospace;
+  color: #00D4FF;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-shadow: 0 0 8px #00D4FF;
+}
+
+.test-progress {
+  font-family: 'Orbitron', monospace;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.test-bar {
+  flex: 1 1 auto;
+  height: 12px;
+  background: #23263a;
+  border-radius: 8px;
+  margin: 0 18px;
+  overflow: hidden;
+  min-width: 120px;
+  max-width: 180px;
+  position: relative;
+}
+
+.test-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  box-shadow: 0 0 12px #00D4FF99;
+  border-radius: 8px;
+  width: 0;
+  transition: width 0.8s cubic-bezier(.77,0,.18,1);
+}
+
+.test-main {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+}
+
+.test-question {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  color: #fff;
+  text-shadow: 0 0 8px #00D4FF;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+  text-align: center;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+
+.test-image {
+  width: 220px;
+  height: 120px;
+  background: rgba(20,25,40,0.7);
+  border: 2px dashed #7B2CBF;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px #7B2CBF55;
+  margin-bottom: 2px;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.test-image-icon {
+  font-size: 2.5rem;
+  color: #8A94A8;
+  margin-bottom: 6px;
+}
+
+.test-image-label {
+  color: #8A94A8;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.test-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.test-answer {
+  background: rgba(20,25,40,0.7);
+  border: 2px solid #23263a;
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  padding: 18px 0;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00D4FF22;
+  transition: all 0.18s;
+  outline: none;
+  position: relative;
+  letter-spacing: 1px;
+}
+
+.test-answer:hover:not([disabled]) {
+  border-color: #00D4FF;
+  box-shadow: 0 0 18px #00D4FF99;
+  color: #00D4FF;
+  z-index: 2;
+}
+
+.test-answer.selected.correct {
+  border-color: #00E676;
+  box-shadow: 0 0 18px #00E67699;
+  color: #00E676;
+  animation: blink-green 0.5s;
+}
+
+.test-answer.selected.incorrect {
+  border-color: #FF4444;
+  box-shadow: 0 0 18px #FF444499;
+  color: #FF4444;
+  animation: blink-red 0.5s;
+}
+
+.test-nav {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.test-nav-btn {
+  background: linear-gradient(90deg, #23263a 0%, #1A1F2E 100%);
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00D4FF22;
+  transition: all 0.18s;
+  letter-spacing: 1px;
+}
+
+.test-nav-btn:enabled:hover {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  box-shadow: 0 0 18px #00D4FF99, 0 0 32px #7B2CBF88;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.test-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -----------------------------------------------------------------
+   ГРА «ПК-МАЙСТЕРНЯ»
+   ----------------------------------------------------------------- */
+.game-grid {
+  display: grid;
+  grid-template-columns: 250px 1fr 280px;
+  grid-template-rows: 1fr auto;
+  gap: 32px;
+  min-height: 600px;
+  position: relative;
+  margin: 0 auto;
+  max-width: 1400px;
+  padding-bottom: 60px;
+}
+
+/* Ліва панель */
+.game-left {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  background: rgba(20,25,40,0.8);
+  border-radius: 18px;
+  box-shadow: 0 0 18px #00D4FF33;
+  padding: 28px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 270px;
+  align-items: stretch;
+  backdrop-filter: blur(10px);
+}
+
+.game-progress-title {
+  font-family: 'Orbitron', monospace;
+  color: #00D4FF;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px #00D4FF;
+  letter-spacing: 1px;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+
+.game-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.game-checklist li {
+  color: #8A94A8;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 4px 0;
+  border-left: 4px solid #23263a;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.game-checklist li.done {
+  color: #00E676;
+  border-left: 4px solid #00E676;
+  text-shadow: 0 0 8px #00E67699;
+}
+
+.game-controls {
+  margin-top: 18px;
+  background: rgba(20,25,40,0.7);
+  border-radius: 14px;
+  padding: 14px 10px 10px 10px;
+  box-shadow: 0 0 10px #7B2CBF33;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.controls-title {
+  font-family: 'Orbitron', monospace;
+  color: #7B2CBF;
+  font-size: 1rem;
+  margin-bottom: 2px;
+  letter-spacing: 1px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.key-btn {
+  background: linear-gradient(90deg, #23263a 0%, #1A1F2E 100%);
+  color: #fff;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  margin-right: 2px;
+  box-shadow: 0 0 8px #00D4FF44;
+  transition: all 0.18s;
+  cursor: pointer;
+  outline: none;
+  min-width: 54px;
+  min-height: 38px;
+  text-align: center;
+  position: relative;
+  letter-spacing: 1px;
+  border-bottom: 3px solid #7B2CBF;
+  user-select: none;
+}
+
+.key-btn span {
+  display: block;
+  font-size: 0.8rem;
+  color: #8A94A8;
+  margin-top: 2px;
+}
+
+.key-btn:active {
+  background: #7B2CBF;
+  color: #fff;
+  box-shadow: 0 0 18px #7B2CBF99, 0 0 32px #00D4FF99;
+  transform: translateY(2px) scale(0.98);
+}
+
+.key-btn:hover:not(:active) {
+  box-shadow: 0 0 18px #00D4FF99, 0 0 32px #7B2CBF88;
+  border-color: #00D4FF;
+  color: #00D4FF;
+  z-index: 2;
+}
+
+/* Центр */
+.game-center {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+}
+
+.pc-scheme {
+  position: relative;
+  width: 420px;
+  height: 340px;
+  background: rgba(20,25,40,0.7);
+  border-radius: 24px;
+  box-shadow: 0 0 32px #00D4FF33;
+  border: 2.5px dashed #23263a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.pc-label {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #8A94A8;
+  font-size: 1.1rem;
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 1px;
+}
+
+.slot {
+  position: absolute;
+  background: rgba(138,148,168,0.08);
+  border: 2px dashed #7B2CBF;
+  border-radius: 12px;
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s, border-color 0.2s, color 0.2s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.slot.cpu { left: 40px; top: 40px; width: 80px; height: 48px; }
+.slot.ram { left: 140px; top: 40px; width: 110px; height: 32px; }
+.slot.gpu { left: 270px; top: 40px; width: 110px; height: 38px; }
+.slot.mb { left: 40px; top: 110px; width: 340px; height: 60px; }
+.slot.psu { left: 40px; top: 200px; width: 110px; height: 38px; }
+.slot.ssd { left: 270px; top: 200px; width: 80px; height: 32px; }
+
+.slot:hover {
+  box-shadow: 0 0 18px #00D4FF99;
+  border-color: #00D4FF;
+  color: #00D4FF;
+  z-index: 2;
+}
+
+/* Права панель */
+.game-right {
+  grid-row: 1 / 2;
+  grid-column: 3 / 4;
+  background: rgba(20,25,40,0.8);
+  border-radius: 18px;
+  box-shadow: 0 0 18px #00D4FF33;
+  padding: 28px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 220px;
+  align-items: stretch;
+  backdrop-filter: blur(10px);
+}
+
+.details-title {
+  font-family: 'Orbitron', monospace;
+  color: #00D4FF;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-shadow: 0 0 8px #00D4FF;
+  letter-spacing: 1px;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-card {
+  background: rgba(20,25,40,0.7);
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  padding: 14px 14px 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 8px #00D4FF22;
+  border: 1.5px solid #23263a;
+  position: relative;
+  transition: box-shadow 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.detail-card .price {
+  margin-left: auto;
+  color: #00D4FF;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.05rem;
+  text-shadow: 0 0 8px #00D4FF;
+}
+
+.detail-card.incompatible {
+  opacity: 0.6;
+  text-decoration: line-through;
+  border-color: #FF4444;
+  color: #FF4444;
+}
+
+.detail-card .incomp-label {
+  background: #FF4444;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  margin-left: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Нижня панель */
+.game-bottom {
+  grid-row: 2 / 3;
+  grid-column: 1 / 4;
+  background: rgba(20,25,40,0.85);
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 0 18px #00D4FF33;
+  padding: 18px 38px 18px 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 60px;
+  backdrop-filter: blur(10px);
+}
+
+.order-info {
+  color: #fff;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.order-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.order-btn {
+  background: linear-gradient(90deg, #23263a 0%, #1A1F2E 100%);
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00D4FF22;
+  transition: all 0.18s;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-btn:enabled:hover {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  box-shadow: 0 0 18px #00D4FF99, 0 0 32px #7B2CBF88;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.order-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.order-btn.blue {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  box-shadow: 0 0 18px #00D4FF99;
+}
+
+.order-btn.green {
+  background: linear-gradient(90deg, #00E676 0%, #00D4FF 100%);
+  color: #fff;
+  box-shadow: 0 0 18px #00E67699;
+}
+
+/* -----------------------------------------------------------------
+   АДМІН-ПАНЕЛЬ
+   ----------------------------------------------------------------- */
+.admin-panel {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: rgba(20,25,40,0.8);
+  border-radius: 22px;
+  box-shadow: 0 0 18px #00D4FF33, 0 2px 24px #7B2CBF22;
+  padding: 38px 38px 28px 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.admin-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.5rem;
+  color: #00D4FF;
+  text-shadow: 0 0 12px #00D4FF;
+  letter-spacing: 2px;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.admin-btn {
+  background: linear-gradient(90deg, #23263a 0%, #1A1F2E 100%);
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00D4FF22;
+  transition: all 0.18s;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-btn:hover {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  box-shadow: 0 0 18px #00D4FF99, 0 0 32px #7B2CBF88;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: none;
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 0 0 #0000;
+}
+
+.admin-table th, 
+.admin-table td {
+  padding: 14px 12px;
+  border-bottom: 1.5px solid #23263a;
+  text-align: left;
+}
+
+.admin-table th {
+  color: #00D4FF;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  background: rgba(20,25,40,0.7);
+  border-bottom: 2.5px solid #7B2CBF;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-progress {
+  display: inline-block;
+  vertical-align: middle;
+  width: 70px;
+  height: 12px;
+  background: #23263a;
+  border-radius: 8px;
+  margin-right: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-progress div {
+  height: 100%;
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  border-radius: 8px;
+  width: 0;
+  transition: width 1.2s cubic-bezier(.77,0,.18,1);
+}
+
+.badge-test {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 12px;
+  background: #23263a;
+  color: #8A94A8;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  margin-right: 2px;
+}
+
+.badge-test.success {
+  background: #00E676;
+  color: #fff;
+  box-shadow: 0 0 8px #00E67699;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 3px 14px;
+  border-radius: 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 1rem;
+  margin-right: 2px;
+  color: #fff;
+  background: #8A94A8;
+  letter-spacing: 1px;
+  box-shadow: 0 0 8px #8A94A888;
+}
+
+.role-badge.admin {
+  background: linear-gradient(90deg, #FFD700 0%, #FFB300 100%);
+  color: #23263a;
+  box-shadow: 0 0 18px #FFD70099;
+}
+
+.role-badge.student {
+  background: #8A94A8;
+  color: #fff;
+}
+
+/* -----------------------------------------------------------------
+   МОДАЛЬНЕ ВІКНО
+   ----------------------------------------------------------------- */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,12,16,0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.modal-window {
+  background: rgba(20,25,40,0.95);
+  border-radius: 24px;
+  box-shadow: 0 0 32px #00D4FF99, 0 0 64px #7B2CBF44;
+  padding: 48px 38px 38px 38px;
+  min-width: 340px;
+  max-width: 96vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.4s;
+}
+
+.modal-icon {
+  font-size: 3.5rem;
+  color: #00D4FF;
+  text-shadow: 0 0 18px #00D4FF, 0 0 24px #7B2CBF;
+  margin-bottom: 12px;
+}
+
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 0 0 12px #00D4FF;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  text-align: center;
+  animation: neon-pulse 2.2s infinite alternate;
+}
+
+.modal-text {
+  color: #8A94A8;
+  font-size: 1.15rem;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.modal-btn {
+  background: linear-gradient(90deg, #00D4FF 0%, #7B2CBF 100%);
+  color: #fff;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 32px;
+  cursor: pointer;
+  box-shadow: 0 0 18px #00D4FF99;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.modal-btn:hover {
+  background: linear-gradient(90deg, #7B2CBF 0%, #00D4FF 100%);
+  box-shadow: 0 0 32px #7B2CBF99, 0 0 32px #00D4FF99;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #8A94A8;
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 2;
+}
+
+.modal-close:hover {
+  color: #FF4444;
+  text-shadow: 0 0 8px #FF4444;
+}
