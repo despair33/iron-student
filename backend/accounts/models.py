@@ -6,6 +6,7 @@ class PlayerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='player_profile')
     current_order = models.IntegerField(default=1)
     completed_orders = models.IntegerField(default=0)
+    progress = models.IntegerField(default=0)  # Прогресс в процентах
     total_score = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
