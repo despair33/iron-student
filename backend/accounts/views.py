@@ -15,6 +15,6 @@ class HomeView(TemplateView):
 
 
 login = LoginView.as_view(template_name='registration/login.html')
-logout = LogoutView.as_view()
+logout = LogoutView.as_view(next_page='/')
 register = RegisterView.as_view()
 home = HomeView.as_view()

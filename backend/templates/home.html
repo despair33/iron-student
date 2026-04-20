@@ -32,14 +32,12 @@
         <button class="active" data-page="dashboard">Дашборд</button>
         <button data-page="test">Тест</button>
         <button data-page="game">Гра</button>
-        {% if user.is_staff %}
-        <button data-page="admin">Адмін</button>
-        {% endif %}
+        <button data-page="admin" id="admin-tab" style="display:none;">Адмін</button>
       </nav>
       <div class="user-info">
         {% if user.is_authenticated %}
           <span>{{ user.username }}</span>
-          <a href="{% url 'logout' %}">Вихід</a>
+          <a href="#" onclick="logout(); return false;">Вихід</a>
         {% else %}
           <a href="{% url 'login' %}" class="login-btn">Вхід</a>
         {% endif %}
@@ -56,8 +54,8 @@
           <div class="progress-block">
             <span class="progress-label">Загальний прогрес:</span>
             <div class="progress-bar">
-              <div class="progress-bar-inner" style="width: 0%"></div>
-              <span class="progress-value">0%</span>
+              <div class="progress-bar-inner" id="main-progress-bar" style="width: 0%"></div>
+              <span class="progress-value" id="main-progress-value">0%</span>
             </div>
           </div>
         </div>
@@ -232,8 +230,8 @@
         <div class="admin-panel">
           <div class="admin-header">
             <div class="admin-title">Панель адміністратора</div>
-            <div class="admin-actions">
-              <button class="admin-btn">
+<div class="admin-actions">
+              <button class="admin-btn" onclick="createStudent()">
                 <i class="fas fa-user-plus"></i> Додати студента
               </button>
               <button class="admin-btn">
@@ -242,22 +240,16 @@
             </div>
           </div>
 
-          <table class="admin-table">
+          <table class="admin-table" id="admin-table">
             <thead>
               <tr>
-                <th>Ім'я користувача</th>
+                <th>ПІБ</th>
                 <th>Роль</th>
                 <th>Тест</th>
                 <th>Замовлення</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{{ user.username }}</td>
-                <td><span class="role-badge admin">Адмін</span></td>
-                <td><span class="badge-test">—</span></td>
-                <td>—</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -286,6 +278,125 @@
   </div>
 
   <script>
+    let currentUser = null;
+
+    async function checkUserRole() {
+      try {
+        const csrfToken = getCookie('csrftoken');
+        const response = await fetch('/api/user/role/', { 
+          credentials: 'same-origin',
+          headers: { 'X-CSRFToken': csrfToken }
+        });
+        const data = await response.json();
+        currentUser = data;
+        
+        if (data.is_teacher) {
+          document.getElementById('admin-tab').style.display = '';
+          loadStudents();
+        }
+      } catch(e) {
+        console.log('Not logged in or error');
+      }
+    }
+
+    async function loadProgress() {
+      try {
+        const csrfToken = getCookie('csrftoken');
+        const response = await fetch('/api/progress/', { 
+          credentials: 'same-origin',
+          headers: { 'X-CSRFToken': csrfToken }
+        });
+        const data = await response.json();
+        
+        const progressBar = document.getElementById('main-progress-bar');
+        const progressValue = document.getElementById('main-progress-value');
+        
+        if (progressBar && progressValue && data.progress !== undefined) {
+          const progressPercent = Math.min(100, data.progress);
+          progressBar.style.width = progressPercent + '%';
+          progressValue.textContent = progressPercent + '%';
+        }
+      } catch(e) {
+        console.log('Error loading progress:', e);
+      }
+    }
+
+    async function logout() {
+      const csrfToken = getCookie('csrftoken');
+      await fetch('/accounts/logout/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': csrfToken }
+      });
+      window.location.href = '/';
+    }
+
+    async function loadStudents() {
+      try {
+        const csrfToken = getCookie('csrftoken');
+        const response = await fetch('/api/students/', { 
+          credentials: 'same-origin',
+          headers: { 'X-CSRFToken': csrfToken }
+        });
+        const data = await response.json();
+        
+        const tbody = document.querySelector('#admin-table tbody');
+        tbody.innerHTML = '';
+        
+        data.students.forEach(student => {
+          const testScore = student.test_score || '—';
+          const passed = student.test_passed ? 'success' : '';
+          const row = `<tr>
+            <td>${student.first_name || ''} ${student.last_name || ''} (${student.username})</td>
+            <td><span class="role-badge student">Студент</span></td>
+            <td><span class="badge-test ${passed}">${testScore}</span></td>
+            <td>${student.completed_orders} з ${student.current_order}</td>
+          </tr>`;
+          tbody.innerHTML += row;
+        });
+      } catch(e) {
+        console.error('Error loading students:', e);
+      }
+    }
+
+    async function createStudent() {
+      const username = prompt('Ім\'я користувача (username):');
+      if (!username) return;
+      
+      const password = prompt('Пароль:');
+      if (!password) return;
+      
+      const firstName = prompt('Ім\'я:') || '';
+      const lastName = prompt('Прізвище:') || '';
+      
+      try {
+        const csrfToken = getCookie('csrftoken');
+        const response = await fetch('/api/students/create/', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+          },
+          body: JSON.stringify({ 
+            username, 
+            password, 
+            first_name: firstName, 
+            last_name: lastName 
+          }),
+          credentials: 'same-origin'
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('Студент створений!');
+          loadStudents();
+        } else {
+          alert('Помилка: ' + data.error);
+        }
+      } catch(e) {
+        alert('Помилка: ' + e);
+      }
+    }
+
     function switchPage(pageId) {
       document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
       document.querySelector('nav button[data-page="' + pageId + '"]').classList.add('active');
@@ -341,6 +452,10 @@
     window.addEventListener('DOMContentLoaded', () => {
       const pb = document.querySelector('.progress-bar-inner');
       if(pb) setTimeout(() => pb.style.width = '0%', 200);
+      checkUserRole();
+      loadProgress();
+      
+      setInterval(loadProgress, 5000);
     });
 
     function showModal(result, total) {
@@ -366,7 +481,12 @@
         btn.classList.add('active');
         pages.forEach(page => {
           page.classList.remove('active');
-          if(page.id === btn.dataset.page) page.classList.add('active');
+          if(page.id === btn.dataset.page) {
+            page.classList.add('active');
+            if(page.id === 'admin' && currentUser && currentUser.is_teacher) {
+              loadStudents();
+            }
+          }
         });
       });
     });
@@ -470,6 +590,7 @@
         const total = testData.length;
         
         await saveTestResult(score, total);
+        await loadProgress();
         showModal(score, total);
       };
       
