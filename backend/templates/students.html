@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Группа студентов</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f6f9;
+}
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.header{
+    background:#1e293b;
+    color:white;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:25px;
+}
+
+.header h1{
+    margin:0 0 10px;
+}
+
+.info{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.students{
+    margin-top:20px;
+}
+
+.student{
+    display:flex;
+    justify-content:space-between;
+    padding:15px;
+    border-bottom:1px solid #eee;
+}
+
+.student:last-child{
+    border:none;
+}
+
+.num{
+    font-weight:bold;
+    color:#2563eb;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Группа ИС-21</h1>
+        <div class="info">
+            <div>📚 Курс: <b>2</b></div>
+            <div>👨‍🏫 Преподаватель: <b>Иванов И.И.</b></div>
+            <div>👥 Студентов: <b>5</b></div>
+        </div>
+    </div>
+
+    <div class="card students">
+        <h2>Список студентов</h2>
+
+        <div class="student">
+            <span class="num">1</span>
+            <span>Петров Андрей</span>
+        </div>
+
+        <div class="student">
+            <span class="num">2</span>
+            <span>Сидоров Максим</span>
+        </div>
+
+        <div class="student">
+            <span class="num">3</span>
+            <span>Коваленко Артём</span>
+        </div>
+
+        <div class="student">
+            <span class="num">4</span>
+            <span>Мельник Олег</span>
+        </div>
+
+        <div class="student">
+            <span class="num">5</span>
+            <span>Грищенко Влад</span>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
