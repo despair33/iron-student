@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #1f2430;
+    color: #e0e6ed;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Шапка */
+header {
+    padding: 20px 40px;
+    background: linear-gradient(90deg, #2b2f3a, #343a46);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #00d4ff;
+}
+
+/* Основной блок */
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+}
+
+/* Заголовок */
+.title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #00d4ff, #9f5cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Описание */
+.description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #aab3c5;
+    margin-bottom: 40px;
+}
+
+/* Кнопка */
+.btn {
+    padding: 15px 40px;
+    font-size: 16px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #00d4ff, #9f5cff);
+    color: white;
+    transition: 0.3s;
+    box-shadow: 0 5px 20px rgba(0,212,255,0.3);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(159,92,255,0.4);
+}
+
+/* Декоративные точки */
+body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 25px 25px;
+    pointer-events: none;
+}
+
+/* Учасники */
+.team {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.team h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, #00d4ff, #9f5cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.member {
+    background: #2b2f3a;
+    padding: 20px;
+    border-radius: 16px;
+    width: 160px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,212,255,0.2);
+}
+
+.member img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.member p {
+    font-size: 14px;
+    color: #aab3c5;
+}
