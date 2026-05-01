@@ -135,8 +135,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR.parent / 'frontend']
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/index.html'
+LOGOUT_REDIRECT_URL = '/mainPage.html'

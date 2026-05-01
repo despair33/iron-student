@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.urls import re_path
 from django.contrib import admin
 
@@ -15,10 +15,10 @@ class AdminAccessMiddleware:
     def __call__(self, request):
         if request.path.startswith('/admin/'):
             if not request.user.is_authenticated:
-                return HttpResponseForbidden("Сначала войдите в систему")
+                return HttpResponseRedirect('/mainPage.html')
             
             if not request.user.is_superuser:
                 if not request.user.groups.filter(name='Учитель').exists():
-                    return HttpResponseForbidden("Доступ только для учителей")
+                    return HttpResponseRedirect('/mainPage.html')
         
         return self.get_response(request)
