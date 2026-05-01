@@ -261,9 +261,12 @@ class UserRoleView(APIView):
 
     def get(self, request):
         return Response({
+            'is_superuser': request.user.is_superuser,
             'is_teacher': is_teacher(request.user),
             'is_student': request.user.groups.filter(name='Студент').exists(),
-            'username': request.user.username
+            'username': request.user.username,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name
         })
 
 

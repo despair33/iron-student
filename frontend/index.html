@@ -43,7 +43,7 @@
         <div class="dashboard-hero">
           <div class="dashboard-hello">
             <span class="hello-main">З поверненням, <span id="username-display">Гість</span>!</span>
-            <span class="badge">Студент</span>
+            <span class="badge" id="user-badge">Студент</span>
           </div>
           <div class="progress-block">
             <span class="progress-label">Загальний прогрес:</span>
@@ -85,12 +85,12 @@
 
           <div class="card">
             <div class="card-icon"><i class="fas fa-book"></i></div>
-            <div class="card-title">Методички</div>
-            <ul class="card-links">
-              <li><a href="#" target="_blank"><i class="fas fa-file-pdf"></i> Основи складання ПК (PDF)</a></li>
-              <li><a href="#" target="_blank"><i class="fas fa-file-pdf"></i> Схема материнської плати (PDF)</a></li>
-            </ul>
-            <button class="card-btn">Всі матеріали</button>
+             <div class="card-title">Методички</div>
+             <ul class="card-links">
+               <li><a href="/static/methodics/Komp_gramotnist.pdf" target="_blank" download><i class="fas fa-file-pdf"></i> Комп'ютерна грамотність (PDF)</a></li>
+               <li><a href="/static/methodics/Krupelnitskij_P1_2020_104.pdf" target="_blank" download><i class="fas fa-file-pdf"></i> Методичка (PDF)</a></li>
+             </ul>
+             <button class="card-btn">Всі матеріали</button>
           </div>
         </div>
       </section>
@@ -239,6 +239,7 @@
                 <th>ПІБ</th>
                 <th>Роль</th>
                 <th>Тест</th>
+                <th>Прогрес</th>
                 <th>Замовлення</th>
               </tr>
             </thead>
@@ -307,18 +308,30 @@
         const data = await response.json();
         currentUser = data;
         
-        document.getElementById('username-display').textContent = data.username || 'Гість';
+        const fullName = (data.first_name || data.last_name) 
+          ? `${data.first_name} ${data.last_name}`.trim()
+          : '';
+        const displayName = fullName || data.username;
+        const userInfoText = fullName 
+          ? `${fullName} (${data.username})`
+          : data.username;
+        
+        document.getElementById('username-display').textContent = displayName;
         document.getElementById('user-info').innerHTML = `
-          <span>${data.username}</span>
+          <span>${userInfoText}</span>
           <a href="#" onclick="logout(); return false;">Вихід</a>
         `;
         
-        // Скрыть прогресс-бар для учителей и админов
-        if (data.is_teacher || data.is_superuser) {
+        // Обновить бейдж роли и скрыть прогресс-бар для учителей и админов
+        const userBadge = document.getElementById('user-badge');
+        if (data.is_superuser) {
+          if (userBadge) userBadge.textContent = 'Админ';
           const progressBlock = document.querySelector('.progress-block');
           if (progressBlock) progressBlock.style.display = 'none';
-          const playCard = document.querySelector('.card:nth-child(2)');
-          if (playCard) playCard.style.display = 'none';
+        } else if (data.is_teacher) {
+          if (userBadge) userBadge.textContent = 'Учитель';
+          const progressBlock = document.querySelector('.progress-block');
+          if (progressBlock) progressBlock.style.display = 'none';
         }
         
         if (data.is_teacher || data.is_superuser) {
@@ -380,7 +393,8 @@
             <td>${student.first_name || ''} ${student.last_name || ''} (${student.username})</td>
             <td><span class="role-badge student">Студент</span></td>
             <td><span class="badge-test ${passed}">${testScore}</span></td>
-            <td>${student.completed_orders} з ${student.current_order}</td>
+            <td>${student.progress}%</td>
+            <td>${student.completed_orders} з 5</td>
           </tr>`;
           tbody.innerHTML += row;
         });

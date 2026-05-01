@@ -35,5 +35,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    # Статические файлы (CSS, JS) из frontend/
-    urlpatterns += static('/static/', document_root=settings.BASE_DIR.parent / 'frontend')
+    # Статические файлы (CSS, JS, PDF) из frontend/static/
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR.parent / 'frontend/static')
