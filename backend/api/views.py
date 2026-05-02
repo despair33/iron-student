@@ -2,11 +2,15 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.conf import settings
 import datetime
 import os
+import sys
+import django
+from django.contrib.auth.models import User, Group
+from accounts.models import PlayerProfile, TestResult
 
 def is_reportlab_available():
     try:
@@ -173,3 +177,49 @@ class CertificateInfoView(APIView):
             'progress': profile.progress,
             'date': datetime.date.today().strftime('%d.%m.%Y'),
         })
+
+
+class HealthCheckView(APIView):
+    """Health check endpoint"""
+    permission_classes = [AllowAny]
+    
+    def get(self, request):
+        return Response({'status': 'ok'})
+
+
+class StudentExportView(APIView):
+    """Export students data as CSV"""
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        import csv
+        
+        # Check if user is teacher or superuser
+        if not (request.user.is_superuser or request.user.groups.filter(name='Учитель').exists()):
+            return HttpResponse("Forbidden", status=403)
+        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="students_export.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['First Name', 'Last Name', 'Username', 'Test Score', 'Test Passed', 'Progress (%)', 'Completed Orders'])
+        
+        students = User.objects.filter(groups__name='Студент').distinct()
+        for student in students:
+            profile = student.player_profile
+            last_test = TestResult.objects.filter(user=student).order_by('-completed_at').first()
+            
+            test_score = f"{last_test.score}/{last_test.total_questions}" if last_test else "N/A"
+            test_passed = "Yes" if last_test and last_test.passed else "No"
+            
+            writer.writerow([
+                student.first_name,
+                student.last_name,
+                student.username,
+                test_score,
+                test_passed,
+                profile.progress,
+                profile.completed_orders
+            ])
+        
+        return response

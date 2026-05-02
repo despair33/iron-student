@@ -75,15 +75,6 @@
           </div>
 
           <div class="card">
-            <div class="card-icon"><i class="fas fa-certificate"></i></div>
-            <div class="card-title">Мої сертифікати</div>
-            <ul class="cert-list">
-              <li><i class="fas fa-file-pdf"></i> Поки що немає</li>
-            </ul>
-            <button class="card-btn">Завантажити всі PDF</button>
-          </div>
-
-          <div class="card">
             <div class="card-icon"><i class="fas fa-book"></i></div>
              <div class="card-title">Методички</div>
              <ul class="card-links">
@@ -236,7 +227,7 @@
               <button class="admin-btn" onclick="createStudent()">
                 <i class="fas fa-user-plus"></i> Додати студента
               </button>
-              <button class="admin-btn">
+              <button class="admin-btn" onclick="exportStudents()">
                 <i class="fas fa-file-export"></i> Експорт даних
               </button>
             </div>
@@ -654,9 +645,13 @@
        renderTestQuestion();
      }
      
-     function downloadCertificate() {
-       window.open('/api/certificate/pdf/', '_blank');
-     }
+      function downloadCertificate() {
+        window.open('/api/certificate/pdf/', '_blank');
+      }
+      
+      function exportStudents() {
+        window.open('/api/students/export/', '_blank');
+      }
   </script>
 
 </body>
