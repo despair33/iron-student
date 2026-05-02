@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
@@ -9,9 +9,9 @@ RUN pip install -r requirements.txt
 # Копируем весь проект
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/
-COPY db.sqlite3 ./ 2>/dev/null || true
+# База данных будет создана при миграциях
 
-# Создаем папки для staticfiles и media
+# Создаем папки для staticfiles
 RUN mkdir -p /app/staticfiles
 
 # Запуск
