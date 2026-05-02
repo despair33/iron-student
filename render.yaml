@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: iron-student
+    env: docker
+    plan: free
+    numInstances: 1
+    healthCheckPath: /api/health/
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: DEBUG
+        value: "True"
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://iron-student.onrender.com"
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "True"
