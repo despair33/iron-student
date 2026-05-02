@@ -234,7 +234,7 @@ class CreateStudentView(APIView):
                 'error': 'Username already exists'
             }, status=status.HTTP_400_BAD_REQUEST)
         
-        student_group = Group.objects.get(name='Студент')
+        student_group, _ = Group.objects.get_or_create(name='Студент')
         
         user = User.objects.create_user(
             username=username,
