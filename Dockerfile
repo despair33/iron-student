@@ -17,4 +17,4 @@ RUN mkdir -p /app/staticfiles
 
 # Запуск с инициализацией
 EXPOSE 8000
-CMD ["sh", "-c", "python backend/manage.py migrate && python backend/manage.py collectstatic --noinput && python /app/init_admin.py && python backend/manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python backend/manage.py migrate && python backend/manage.py collectstatic --noinput && python /app/init_admin.py && python backend/manage.py populate_test && python backend/manage.py runserver 0.0.0.0:8000"]
