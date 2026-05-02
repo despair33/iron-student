@@ -98,10 +98,6 @@
       <section class="page" id="test">
         <div class="test-container">
           <div class="test-header">
-            <div class="test-timer">
-              <i class="fas fa-clock"></i>
-              <span>12:34</span>
-            </div>
             <div class="test-bar">
               <div class="test-bar-inner"></div>
             </div>
@@ -255,16 +251,21 @@
       <div class="modal-window">
         <button class="modal-close" id="modal-close">×</button>
         <div class="modal-icon">
-          <i class="fas fa-trophy"></i>
+          <i class="fas fa-trophy" id="modal-icon-success"></i>
+          <i class="fas fa-times-circle" id="modal-icon-fail" style="display:none; color: #e74c3c;"></i>
         </div>
         <div class="modal-title" id="modal-title">Вітаємо!</div>
          <div class="modal-text" id="modal-text">
            Ви успішно склали тест.<br>
            Ваш результат: <span id="modal-score">3 / 3</span>
          </div>
-         <button class="modal-btn" onclick="downloadCertificate()">
+         <button class="modal-btn" id="modal-download-btn" onclick="downloadCertificate()">
            <i class="fas fa-download"></i>
            Завантажити сертифікат (PDF).
+         </button>
+         <button class="modal-btn" id="modal-retake-btn" style="display:none; background: #e74c3c;" onclick="retakeTest()">
+           <i class="fas fa-redo"></i>
+           Перепройти тест
          </button>
       </div>
     </div>
@@ -509,17 +510,30 @@
         btn.className = 'test-answer';
         btn.textContent = ans.text;
         btn.dataset.answerId = ans.id;
-        btn.disabled = testAnswers[testIndex] !== undefined;
         
-        if (testAnswers[testIndex] !== undefined) {
-          btn.classList.add('selected');
+        // Если этот ответ был выбран ранее, подсвечиваем его
+        if (testAnswers[testIndex] == ans.id) {
+          btn.style.backgroundColor = '#007ACC';
+          btn.style.color = 'white';
+          btn.style.borderColor = '#005a9e';
+          btn.innerHTML = ans.text + ' <i class="fas fa-check" style="margin-left: 8px;"></i>';
         }
         
         btn.addEventListener('click', function() {
-          if (testAnswers[testIndex] !== undefined) return;
+          // Убираем подсветку со всех кнопок
+          answersBlock.querySelectorAll('button').forEach(b => {
+            b.style.backgroundColor = '';
+            b.style.color = '';
+            b.style.borderColor = '';
+            b.innerHTML = b.textContent.replace(' <i class="fas fa-check" style="margin-left: 8px;"></i>', '');
+          });
           
-          answersBlock.querySelectorAll('button').forEach(b => b.disabled = true);
-          btn.classList.add('selected');
+          // Подсвечиваем выбранный ответ
+          btn.style.backgroundColor = '#007ACC';
+          btn.style.color = 'white';
+          btn.style.borderColor = '#005a9e';
+          btn.innerHTML = ans.text + ' <i class="fas fa-check" style="margin-left: 8px;"></i>';
+          
           testAnswers[testIndex] = ans.id;
           
           document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
@@ -570,7 +584,7 @@
         
         if (result.success) {
           await loadProgress();
-          showModal(result.score, result.total);
+          showModal(result.score, result.total, result.passed);
         }
       };
       
@@ -604,10 +618,50 @@
       setInterval(loadProgress, 5000);
     });
 
-    function showModal(result, total) {
-      document.getElementById('modal-score').textContent = result + ' / ' + total;
-      document.getElementById('modal-title').textContent = result === total ? 'Вітаємо!' : 'Результат тесту';
+    function showModal(score, total, success = true) {
+      if (success) {
+        document.getElementById('modal-title').textContent = 'Вітаємо!';
+        document.getElementById('modal-text').innerHTML = 'Ви успішно склали тест на 8/8!<br>Ваш прогрес: <span id="modal-score">' + score + ' / ' + total + '</span>';
+        document.getElementById('modal-icon-success').style.display = '';
+        document.getElementById('modal-icon-fail').style.display = 'none';
+        document.getElementById('modal-download-btn').textContent = 'Перейти к игре';
+        document.getElementById('modal-download-btn').innerHTML = '<i class="fas fa-gamepad"></i> Перейти к игре';
+        document.getElementById('modal-download-btn').onclick = function() {
+          document.getElementById('modal-bg').style.display = 'none';
+          switchPage('game');
+        };
+        document.getElementById('modal-download-btn').style.display = '';
+        document.getElementById('modal-retake-btn').style.display = 'none';
+        // Разрешаем закрытие при успехе
+        document.getElementById('modal-close').onclick = function() {
+          document.getElementById('modal-bg').style.display = 'none';
+        };
+        document.getElementById('modal-bg').onclick = function(e) {
+          if(e.target === this) this.style.display = 'none';
+        };
+      } else {
+        document.getElementById('modal-title').textContent = 'Тест не складено';
+        document.getElementById('modal-text').innerHTML = 'Ваш результат: <span id="modal-score">' + score + ' / ' + total + '</span><br>Спробуйте ще раз!';
+        document.getElementById('modal-icon-success').style.display = 'none';
+        document.getElementById('modal-icon-fail').style.display = '';
+        document.getElementById('modal-download-btn').style.display = 'none';
+        document.getElementById('modal-retake-btn').style.display = '';
+        // Запрещаем закрытие при провале - только кнопка "Перепройти"
+        document.getElementById('modal-close').onclick = function() { return false; };
+        document.getElementById('modal-bg').onclick = function(e) {
+          e.preventDefault();
+          return false;
+        };
+      }
+      
       document.getElementById('modal-bg').style.display = 'flex';
+    }
+
+    function retakeTest() {
+      document.getElementById('modal-bg').style.display = 'none';
+      testIndex = 0;
+      testAnswers = [];
+      loadTestQuestions();
     }
 
     document.getElementById('modal-close').onclick = function() {

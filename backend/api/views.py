@@ -44,7 +44,7 @@ class SubmitTestView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        answers = request.data.get('answers', [])  # [{question_id: 1, answer_id: 2}, ...]
+        answers = request.data.get('answers', [])
 
         if not answers:
             return Response({
@@ -66,27 +66,33 @@ class SubmitTestView(APIView):
             except Answer.DoesNotExist:
                 pass
 
-        passed = (correct_count / total) >= 0.5 if total > 0 else False
+        # Прогресс засчитывается только при 100% результате (8/8) и если тест еще не был пройден
+        progress_given = False
+        if correct_count == total:
+            # Проверяем, проходил ли пользователь тест ранее с успехом
+            already_passed = TestResult.objects.filter(user=request.user, passed=True).exists()
+            
+            if not already_passed:
+                profile = request.user.player_profile
+                profile.progress = min(100, profile.progress + 50)
+                profile.save()
+                progress_given = True
 
         # Сохраняем результат
-        test_result = TestResult.objects.create(
+        passed = correct_count == total
+        TestResult.objects.create(
             user=request.user,
             score=correct_count,
             total_questions=total,
             passed=passed
         )
 
-        # Обновляем прогресс пользователя
-        profile = request.user.player_profile
-        # Даем 20% прогресса за прохождение теста
-        profile.progress = min(100, profile.progress + 20)
-        profile.save()
-
         return Response({
             'success': True,
             'score': correct_count,
             'total': total,
             'passed': passed,
+            'progress_given': progress_given,
             'percentage': int((correct_count / total) * 100) if total > 0 else 0,
         })
 
