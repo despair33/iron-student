@@ -9,11 +9,12 @@ RUN pip install -r requirements.txt
 # Копируем весь проект
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/
-# База данных будет создана при миграциях
+COPY init_admin.py /app/init_admin.py
+RUN chmod +x /app/init_admin.py
 
-# Создаем папки для staticfiles
+# Создаем папку для staticfiles
 RUN mkdir -p /app/staticfiles
 
-# Запуск
+# Запуск с инициализацией
 EXPOSE 8000
-CMD ["sh", "-c", "python backend/manage.py migrate && python backend/manage.py collectstatic --noinput && python backend/manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python backend/manage.py migrate && python backend/manage.py collectstatic --noinput && python /app/init_admin.py && python backend/manage.py runserver 0.0.0.0:8000"]
