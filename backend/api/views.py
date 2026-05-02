@@ -10,7 +10,85 @@ import os
 import sys
 import django
 from django.contrib.auth.models import User, Group
-from accounts.models import PlayerProfile, TestResult
+from accounts.models import PlayerProfile, TestResult, Question, Answer
+
+
+class TestQuestionsView(APIView):
+    """Получить список вопросов теста с вариантами ответов"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        questions = Question.objects.all().prefetch_related('answers')
+        data = []
+
+        for question in questions:
+            answers = []
+            for answer in question.answers.all():
+                answers.append({
+                    'id': answer.id,
+                    'text': answer.text,
+                })
+
+            data.append({
+                'id': question.id,
+                'text': question.text,
+                'component': question.get_component_display(),
+                'answers': answers,
+            })
+
+        return Response({'questions': data})
+
+
+class SubmitTestView(APIView):
+    """Отправить ответы и получить результат"""
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        answers = request.data.get('answers', [])  # [{question_id: 1, answer_id: 2}, ...]
+
+        if not answers:
+            return Response({
+                'success': False,
+                'error': 'No answers provided'
+            }, status=400)
+
+        correct_count = 0
+        total = len(answers)
+
+        for item in answers:
+            question_id = item.get('question_id')
+            answer_id = item.get('answer_id')
+
+            try:
+                answer = Answer.objects.get(id=answer_id, question_id=question_id)
+                if answer.is_correct:
+                    correct_count += 1
+            except Answer.DoesNotExist:
+                pass
+
+        passed = (correct_count / total) >= 0.5 if total > 0 else False
+
+        # Сохраняем результат
+        test_result = TestResult.objects.create(
+            user=request.user,
+            score=correct_count,
+            total_questions=total,
+            passed=passed
+        )
+
+        # Обновляем прогресс пользователя
+        profile = request.user.player_profile
+        # Даем 20% прогресса за прохождение теста
+        profile.progress = min(100, profile.progress + 20)
+        profile.save()
+
+        return Response({
+            'success': True,
+            'score': correct_count,
+            'total': total,
+            'passed': passed,
+            'percentage': int((correct_count / total) * 100) if total > 0 else 0,
+        })
 
 def is_reportlab_available():
     try:

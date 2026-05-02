@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status
-from .views import CertificatePDFView, CertificateInfoView, StudentExportView, HealthCheckView
+from .views import CertificatePDFView, CertificateInfoView, StudentExportView, HealthCheckView, TestQuestionsView, SubmitTestView
 
 
 def is_teacher(user):
@@ -287,4 +287,6 @@ urlpatterns = [
     path('certificate/info/', CertificateInfoView.as_view(), name='certificate-info'),
     path('students/export/', StudentExportView.as_view(), name='students-export'),
     path('health/', HealthCheckView.as_view(), name='health-check'),
+    path('test/questions/', TestQuestionsView.as_view(), name='test-questions'),
+    path('test/submit/', SubmitTestView.as_view(), name='test-submit'),
 ]

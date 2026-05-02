@@ -465,19 +465,117 @@
       }
     }
 
-    async function saveTestResult(score, total) {
-      const csrfToken = getCookie('csrftoken');
-      const response = await fetch('/api/save-test/', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrfToken
-        },
-        body: JSON.stringify({ score, total }),
-        credentials: 'same-origin'
-      });
-      return await response.json();
+    const testSection = document.getElementById('test');
+    let testData = [];
+    let testIndex = 0;
+    let testAnswers = [];
+
+    async function loadTestQuestions() {
+      try {
+        const response = await fetch('/api/test/questions/', {
+          credentials: 'same-origin'
+        });
+        const data = await response.json();
+        testData = data.questions;
+        testIndex = 0;
+        testAnswers = [];
+        document.querySelector('#test-question-total').textContent = testData.length;
+        renderTestQuestion();
+      } catch(e) {
+        console.error('Error loading test questions:', e);
+      }
     }
+
+    function renderTestQuestion() {
+      if (testData.length === 0) return;
+      
+      const q = testData[testIndex];
+      document.querySelector('#test-question-index').textContent = testIndex + 1;
+      
+      const bar = document.querySelector('.test-bar-inner');
+      if(bar) bar.style.width = ((testIndex + 1) / testData.length * 100) + '%';
+      
+      document.querySelector('.test-question').textContent = q.text;
+      
+      const imgIcon = document.querySelector('.test-image-icon');
+      imgIcon.className = 'test-image-icon fas fa-microchip';
+      document.querySelector('.test-image-label').textContent = 'Питання про ' + q.component;
+      
+      const answersBlock = document.querySelector('.test-answers');
+      answersBlock.innerHTML = '';
+      
+      q.answers.forEach((ans, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'test-answer';
+        btn.textContent = ans.text;
+        btn.dataset.answerId = ans.id;
+        btn.disabled = testAnswers[testIndex] !== undefined;
+        
+        if (testAnswers[testIndex] !== undefined) {
+          btn.classList.add('selected');
+        }
+        
+        btn.addEventListener('click', function() {
+          if (testAnswers[testIndex] !== undefined) return;
+          
+          answersBlock.querySelectorAll('button').forEach(b => b.disabled = true);
+          btn.classList.add('selected');
+          testAnswers[testIndex] = ans.id;
+          
+          document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
+          document.getElementById('test-finish').style.display = (testIndex === testData.length - 1) ? '' : 'none';
+        });
+        
+        answersBlock.appendChild(btn);
+      });
+      
+      document.getElementById('test-back').disabled = testIndex === 0;
+      document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
+      document.getElementById('test-finish').style.display = (testIndex === testData.length - 1) ? '' : 'none';
+    }
+
+    if(testSection) {
+      document.getElementById('test-back').onclick = function() {
+        if(testIndex > 0) {
+          testIndex--;
+          renderTestQuestion();
+        }
+      };
+      
+      document.getElementById('test-next').onclick = function() {
+        if(testIndex < testData.length - 1) {
+          testIndex++;
+          renderTestQuestion();
+        }
+      };
+      
+      document.getElementById('test-finish').onclick = async function() {
+        const answers = testAnswers.map((answerId, index) => ({
+          question_id: testData[index].id,
+          answer_id: answerId
+        }));
+        
+        const csrfToken = getCookie('csrftoken');
+        const response = await fetch('/api/test/submit/', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+          },
+          body: JSON.stringify({ answers }),
+          credentials: 'same-origin'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          await loadProgress();
+          showModal(result.score, result.total);
+        }
+      };
+      
+      loadTestQuestions();
+     }
 
     function getCookie(name) {
       let cookieValue = null;
@@ -539,113 +637,7 @@
       });
     });
 
-    const testData = [
-      {
-        question: "Що це за компонент?",
-        image: { icon: "fa-image", label: "Зображення материнської плати" },
-        answers: [
-          { text: "Процесор", correct: false },
-          { text: "Оперативна пам'ять", correct: false },
-          { text: "Материнська плата", correct: true }
-        ]
-      },
-      {
-        question: "Яка деталь відповідає за обробку графіки?",
-        image: { icon: "fa-image", label: "Зображення відеокарти" },
-        answers: [
-          { text: "Відеокарта", correct: true },
-          { text: "SSD-накопичувач", correct: false },
-          { text: "Оперативна пам'ять", correct: false }
-        ]
-      },
-      {
-        question: "Який компонент зберігає дані навіть після вимкнення ПК?",
-        image: { icon: "fa-image", label: "Зображення SSD" },
-        answers: [
-          { text: "Оперативна пам'ять", correct: false },
-          { text: "SSD-накопичувач", correct: true },
-          { text: "Відеокарта", correct: false }
-        ]
-      }
-    ];
-
-    let testIndex = 0;
-    let testAnswers = [];
-
-    function renderTestQuestion() {
-      const q = testData[testIndex];
-      document.querySelector('#test-question-index').textContent = testIndex + 1;
-      document.querySelector('#test-question-total').textContent = testData.length;
-      
-      const bar = document.querySelector('.test-bar-inner');
-      if(bar) bar.style.width = ((testIndex + 1) / testData.length * 100) + '%';
-      
-      document.querySelector('.test-question').textContent = q.question;
-      
-      const imgIcon = document.querySelector('.test-image-icon');
-      imgIcon.className = 'test-image-icon fas ' + q.image.icon;
-      document.querySelector('.test-image-label').textContent = q.image.label;
-      
-      const answersBlock = document.querySelector('.test-answers');
-      answersBlock.innerHTML = '';
-      
-      q.answers.forEach((ans, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'test-answer';
-        btn.textContent = ans.text;
-        btn.dataset.correct = ans.correct;
-        btn.disabled = false;
-        
-        btn.addEventListener('click', function() {
-          answersBlock.querySelectorAll('button').forEach(b => b.disabled = true);
-          btn.classList.add('selected');
-          if(ans.correct) {
-            btn.classList.add('correct');
-          } else {
-            btn.classList.add('incorrect');
-          }
-          testAnswers[testIndex] = ans.correct;
-          document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
-          document.getElementById('test-finish').style.display = (testIndex === testData.length - 1) ? '' : 'none';
-        });
-        
-        answersBlock.appendChild(btn);
-      });
-      
-      document.getElementById('test-back').disabled = testIndex === 0;
-      document.getElementById('test-next').style.display = (testIndex < testData.length - 1) ? '' : 'none';
-      document.getElementById('test-finish').style.display = (testIndex === testData.length - 1) ? '' : 'none';
-    }
-
-    const testSection = document.getElementById('test');
-    if(testSection) {
-      document.getElementById('test-back').onclick = function() {
-        if(testIndex > 0) {
-          testIndex--;
-          renderTestQuestion();
-        }
-      };
-      
-      document.getElementById('test-next').onclick = function() {
-        if(testIndex < testData.length - 1) {
-          testIndex++;
-          renderTestQuestion();
-        }
-      };
-      
-      document.getElementById('test-finish').onclick = async function() {
-        const score = testAnswers.filter(Boolean).length;
-        const total = testData.length;
-        
-        await saveTestResult(score, total);
-        await loadProgress();
-        showModal(score, total);
-      };
-       
-       renderTestQuestion();
-     }
-     
-      function downloadCertificate() {
+    function downloadCertificate() {
         window.open('/api/certificate/pdf/', '_blank');
       }
       
