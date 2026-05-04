@@ -148,6 +148,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR.parent / 'frontend/static']
 STATIC_ROOT = BASE_DIR.parent / 'staticfiles'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.parent / 'frontend/components'
+
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/index.html'
 LOGOUT_REDIRECT_URL = '/mainPage.html'

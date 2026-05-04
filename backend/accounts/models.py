@@ -52,6 +52,7 @@ class Question(models.Model):
 
     text = models.TextField(verbose_name='Текст вопроса')
     component = models.CharField(max_length=20, choices=COMPONENT_CHOICES, verbose_name='Компонент')
+    image = models.ImageField(upload_to='questions/', blank=True, null=True, verbose_name='Изображение')
     order = models.IntegerField(default=0, verbose_name='Порядок отображения')
     created_at = models.DateTimeField(auto_now_add=True)
 

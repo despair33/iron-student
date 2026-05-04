@@ -29,10 +29,16 @@ class TestQuestionsView(APIView):
                     'text': answer.text,
                 })
 
+            image_url = None
+            if question.image:
+                image_url = question.image.url
+
             data.append({
                 'id': question.id,
                 'text': question.text,
                 'component': question.get_component_display(),
+                'component_key': question.component,
+                'image': image_url,
                 'answers': answers,
             })
 

@@ -429,8 +429,8 @@ nav button:hover {
 }
 
 .test-image {
-  width: 220px;
-  height: 120px;
+  width: 320px;
+  height: 200px;
   background: rgba(20,25,40,0.7);
   border: 2px dashed #7B2CBF;
   border-radius: 18px;
@@ -442,6 +442,8 @@ nav button:hover {
   margin-bottom: 2px;
   position: relative;
   transition: box-shadow 0.2s;
+  background-size: cover;
+  background-position: center;
 }
 
 .test-image-icon {

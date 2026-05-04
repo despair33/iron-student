@@ -39,3 +39,5 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR.parent / 'frontend/static')
     # Фотографии участников из frontend/photo/
     urlpatterns += static('photo/', document_root=settings.BASE_DIR.parent / 'frontend/photo')
+    # Изображения компонентов для теста
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

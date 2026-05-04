@@ -498,14 +498,36 @@
       
       document.querySelector('.test-question').textContent = q.text;
       
+      const imgContainer = document.querySelector('.test-image');
       const imgIcon = document.querySelector('.test-image-icon');
-      imgIcon.className = 'test-image-icon fas fa-microchip';
-      document.querySelector('.test-image-label').textContent = 'Питання про ' + q.component;
+      const imgLabel = document.querySelector('.test-image-label');
+      
+      if (q.image) {
+        imgContainer.style.backgroundImage = 'url(' + q.image + ')';
+        imgContainer.style.backgroundSize = 'cover';
+        imgContainer.style.backgroundPosition = 'center';
+        imgIcon.style.display = 'none';
+        imgLabel.style.display = 'none';
+      } else {
+        imgContainer.style.backgroundImage = '';
+        imgContainer.style.backgroundSize = '';
+        imgContainer.style.backgroundPosition = '';
+        imgIcon.style.display = '';
+        imgIcon.className = 'test-image-icon fas fa-microchip';
+        imgLabel.style.display = '';
+        imgLabel.textContent = 'Питання про ' + q.component;
+      }
       
       const answersBlock = document.querySelector('.test-answers');
       answersBlock.innerHTML = '';
       
-      q.answers.forEach((ans, idx) => {
+      const shuffledAnswers = [...q.answers].sort(() => Math.random() - 0.5);
+      for (let i = shuffledAnswers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledAnswers[i], shuffledAnswers[j]] = [shuffledAnswers[j], shuffledAnswers[i]];
+      }
+      
+      shuffledAnswers.forEach((ans, idx) => {
         const btn = document.createElement('button');
         btn.className = 'test-answer';
         btn.textContent = ans.text;
