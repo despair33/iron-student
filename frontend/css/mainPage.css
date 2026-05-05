@@ -136,3 +136,16 @@ body::after {
     font-size: 14px;
     color: #aab3c5;
 }
+main {
+    position: relative;
+}
+
+
+.glove-img {
+    position: absolute;
+    right: 50px;     
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;     
+    opacity: 0.9;
+}
