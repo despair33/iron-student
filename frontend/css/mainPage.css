@@ -140,19 +140,15 @@ main {
     position: relative;
 }
 
+/*Рукавиця*/
 
-.main-content {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
+.glove {
+    position: fixed;   
+    right: 0;          
+    top: 50%;          
+    transform: translateY(-50%);
 
-.container {
-    margin: 0 auto;
-}
-
-.glove-img {
-    margin-left: auto; 
-    margin-right: 40px;
-    width: 320px;
+    width: 220px;     
+    z-index: 10;       
+    pointer-events: none; 
 }
