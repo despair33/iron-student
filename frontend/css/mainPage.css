@@ -140,15 +140,11 @@ main {
     position: relative;
 }
 
-/*Рукавиця*/
-
-
 img.glove {
     position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    max-height: 70vh;
-    width: auto;
-    z-index: 1000;
+    right: 0;
+    top: 45%;
+    transform: translateY(-50%) translateY(50px);
+    width: 200px;
+    height: auto;
 }
